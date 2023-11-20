@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/spf13/cobra"
+	telebot "gopkg.in/telebot.v3"
 )
 
 var (
@@ -19,8 +20,9 @@ var (
 
 // nbotCmd represents the nbot command
 var nbotCmd = &cobra.Command{
-	Use:   "nbot",
-	Short: "A brief description of your command",
+	Use:     "nbot",
+	Aliases: []string{"start"},
+	Short:   "A brief description of your command",
 	Long: `A longer description that spans multiple lines and likely contains examples
 and usage of using your command. For example:
 
@@ -29,7 +31,7 @@ This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Printf("nbot %s started", appVersion)
-		nbot.err := telebot.Newbot(telebot.Settings{
+		nbot, err := telebot.NewBot(telebot.Settings{
 			URL:    "",
 			Token:  TeleToken,
 			Poller: &telebot.LongPoller{Timeout: 10 * time.Second},
