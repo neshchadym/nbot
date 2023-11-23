@@ -10,6 +10,9 @@ lint:
 test:
 	go test -v		
 
+get:
+	go get 
+
 build: format get
 	CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} go build -v -o nbot -ldflags "-X github.com/neshchadym/nbot/cmd.appVersion=${VERSION}"	
 
