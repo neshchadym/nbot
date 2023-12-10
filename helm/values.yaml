@@ -1,0 +1,16 @@
+replicaCount: 1
+
+image:
+  repository: "neshchadym"
+  tag: "v.1.0.2-5806e63"
+  arch: amd64
+
+secret:
+  name: "nbot"
+  env: "TELE_TOKEN"
+  key: "token"
+securityContext:
+  privileged: true  
+
+
+  
