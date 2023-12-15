@@ -5,6 +5,10 @@ on:
     branches:
       - develop
 
+permissions:
+  contents: write
+  packages: write
+  
 env:
   TARGETOS: linux
   TARGETARCH: amd64
@@ -12,10 +16,9 @@ env:
 jobs:
   ci:
     name: CI
-    runs-on: ubuntu-latest
-
-    steps:
-                          
+    runs-on: ubuntu-latest        
+     
+    steps:                          
       - name: Checkout
         uses: actions/checkout@v4
         with:
