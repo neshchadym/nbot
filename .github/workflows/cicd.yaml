@@ -1,0 +1,37 @@
+name: NBOT-CICD
+
+on: 
+  push:
+    branches:
+      - develop
+
+env:
+  TARGETOS: linux
+  TARGETARCH: amd64
+  
+jobs:
+  ci:
+    name: CI
+    runs-on: ubuntu-latest
+
+    steps:
+                          
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run test
+        run: make test
+
+      - name: GitHub Container Registry login
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GHCR_TOKEN }}
+
+      - name: Build&Push
+        env:
+          APP: "nbot"
+        run: make image push       
