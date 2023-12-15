@@ -1,8 +1,8 @@
 APP := $(shell basename $(shell git remote get-url origin))
 REGISTRY := ghcr.io/neshchadym
 VERSION=$(shell git describe --tags --abbrev=0)-$(shell git rev-parse --short HEAD)
-TARGETOS=linux
-TARGETARCH=arm64
+TARGETARCH=amd64 
+TARGETOS=${detected_OS}
 
 format:
 	gofmt -s -w ./
