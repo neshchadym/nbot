@@ -1,19 +1,14 @@
 replicaCount: 1
-
 image:
   registry: "ghcr.io"
   repository: "neshchadym/nbot"
   pullPolicy: IfNotPresent
-  tag: "v.1.0.2-5806e63"
+  tag: "v1.0.2-6a02e36"
   os: linux
   arch: amd64
-  
 secret:
   name: "nbot"
   env: "TELE_TOKEN"
   key: "token"
 securityContext:
-  privileged: true  
-
-
-  
+  privileged: true
