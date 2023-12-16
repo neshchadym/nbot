@@ -20,10 +20,10 @@ build: format get
 	CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} go build -v -o nbot -ldflags "-X github.com/neshchadym/nbot/cmd.appVersion=${VERSION}"	
 
 image:
-	docker build . -t ${REGISTRY}/${APP}:${VERSION}-${TARGETARCH}
+	docker build . -t ${REGISTRY}/${APP}:${VERSION}-${detected_OS}-${TARGETARCH} --build-arg TARGETOS=${detected_OS} --build-arg TARGETARCH=${TARGETARCH}
 
 push: 
-	docker push ${REGISTRY}/${APP}:${VERSION}-${TARGETARCH} 	
+	docker push ${REGISTRY}/${APP}:${VERSION}-${TARGETOS}-${TARGETARCH} 	
 
 clean: 
 	rm -rf nbot  

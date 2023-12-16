@@ -4,7 +4,7 @@ image:
   registry: "ghcr.io"
   repository: "neshchadym/nbot"
   pullPolicy: IfNotPresent
-  tag: "v.1.0.2-5806e63"
+  tag: "v1.0.2-347e6c9"
   os: linux
   arch: amd64
   
