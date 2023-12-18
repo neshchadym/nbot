@@ -30,7 +30,7 @@ pipeline {
         stage('build') {
             steps {
                 echo "Building binary for platform ${params.OS} on ${params.ARCH} started"
-                sh "make ${params.OS} ${params.ARCH}"
+                sh "make build ${params.OS} ${params.ARCH}"
             }
         }
 
