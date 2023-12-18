@@ -1,61 +1,61 @@
 pipeline {
     agent any
     parameters {
-        choice(name: 'OS', choices: ['linux', 'apple', 'windows'], description: 'Pick OS')
+        choice(name: 'OS', choices: ['linux', 'darwin', 'windows', 'all'], description: 'Pick OS')
         choice(name: 'ARCH', choices: ['amd64', 'arm64'], description: 'Pick ARCH')
     }
 
     environment {
-        GITHUB_TOKEN=credentials('neshchadym')
-        REPO = 'https://github.com/neshchadym/nbot.git'
+        REPO = 'https://github.com/neshchadym/nbot'
         BRANCH = 'main'
+        REGISTRY = 'ghcr.io/neshchadym'
+        APP = 'nbot'
+        GHCR = 'https://ghcr.io'
     }
 
     stages {
 
-        stage('clone') {
+        stage("clone") {
             steps {
-                echo 'Clone Repository'
+                echo "Clone Repository"
                 git branch: "${BRANCH}", url: "${REPO}"
             }
         }
 
-        stage('test') {
+        stage("test") {
             steps {
-                echo 'Testing started'
+                echo "Testing started"
                 sh "make test"
             }
         }
 
-        stage('build') {
+        stage("build") {
             steps {
-                echo "Building binary for platform ${params.OS} on ${params.ARCH} started"
-                sh "make build ${params.OS} ${params.ARCH}"
+                echo "Build started"
+                sh "make build TARGETOS=${OS} TARGETARCH=${ARCH}"
             }
         }
 
-        stage('image') {
+        stage("image") {
             steps {
-                echo "Building image for platform ${params.OS} on ${params.ARCH} started"
-                sh "make image-${params.OS} ${params.ARCH}"
+                echo "Building image ..."
+                sh "make image REGISTRY=${REGISTRY} APP=${APP}"
             }
         }
-        
-        stage('login to GHCR') {
+        stage("login to GHCR") {
             steps {
-                sh "echo $GITHUB_TOKEN_PSW | docker login ghcr.io -u $GITHUB_TOKEN_USR --password-stdin"
-            }
-        }
+                echo "LOGIN TO GHCR"
+                withCredentials([usernamePassword(credentialsId: 'github-token', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                    sh "docker login -u $USERNAME -p $PASSWORD ${GHCR}"
+                }
 
-        stage('push image') {
-            steps {
-                sh "make -n ${params.OS} ${params.ARCH} image push"
             }
-        } 
-    }
-    post {
-        always {
-            sh 'docker logout'
+        }      
+        stage("push image") {
+            steps {
+                echo 'PUSH TO GHCR'
+                sh 'make push REGISTRY=${REGISTRY} TARGETOS=${OS} TARGETARCH=${ARCH}'
+            }
         }
     }
 }
