@@ -1,5 +1,6 @@
 APP := $(shell basename $(shell git remote get-url origin))
-REGISTRY := ghcr.io/neshchadym
+# REGISTRY := ghcr.io/neshchadym
+REGISTRY := registry.gitlab.com/vova.neschadim
 VERSION=$(shell git describe --tags --abbrev=0)-$(shell git rev-parse --short HEAD)
 TARGETARCH=amd64 
 TARGETOS=linux
